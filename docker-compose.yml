@@ -1,0 +1,139 @@
+version: "2"
+services:
+  shard00:
+    image: mongo
+    command: mongod --replSet rs0 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard00/:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/replicaset_0:/scripts/replicaset_0
+    ports:
+      - 27022:27017
+    links:
+      - shard01
+      - shard02
+  shard01:
+    image: mongo
+    command: mongod --replSet rs0 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard01:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27023:27017
+  shard02:
+    image: mongo
+    command: mongod --replSet rs0 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard02:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27024:27017
+  shard10:
+    image: mongo
+    command: mongod --replSet rs1 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard10:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/replicaset_10:/scripts/replicaset_10
+    ports:
+      - 27025:27017
+    links:
+      - shard11
+      - shard12
+  shard11:
+    image: mongo
+    command: mongod --replSet rs1 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard11:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27026:27017
+  shard12:
+    image: mongo
+    command: mongod --replSet rs1 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard12:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27031:27017
+  shard20:
+    image: mongo
+    command: mongod --replSet rs2 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard20:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/replicaset_20:/scripts/replicaset_20
+    ports:
+      - 27028:27017
+    links:
+      - shard21
+      - shard22
+  shard21:
+    image: mongo
+    command: mongod --replSet rs2 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard21:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27029:27017
+  shard22:
+    image: mongo
+    command: mongod --replSet rs2 --shardsvr --dbpath /data/db --port 27017
+    volumes:
+      - ./data/shard22:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27030:27017
+  configsvr0:
+    image: mongo
+    command: mongod --configsvr --replSet configRs --dbpath /data/db --port 27017
+    volumes:
+      - ./data/configsvr0:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/config_replicaset:/scripts/config_replicaset
+    ports:
+      - 27019:27017
+    links:
+      - configsvr1
+      - configsvr2
+      - shard00
+      - shard10
+      - shard20
+  configsvr1:
+    image: mongo
+    command: mongod --configsvr --replSet configRs --dbpath /data/db --port 27017
+    volumes:
+      - ./data/configsvr1:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27020:27017
+  configsvr2:
+    image: mongo
+    command: mongod --configsvr --replSet configRs --dbpath /data/db --port 27017
+    volumes:
+      - ./data/configsvr2:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27021:27017
+  router0:
+    image: mongo
+    command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/sharding_replicaset:/scripts/sharding_replicaset
+    ports:
+      - 27050:27017
+    links:
+      - configsvr0
+      - configsvr2
+      - configsvr1
+  router1:
+    image: mongo
+    command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/sharding_replicaset:/scripts/sharding_replicaset
+    ports:
+      - 27018:27017
+    links:
+      - router0
