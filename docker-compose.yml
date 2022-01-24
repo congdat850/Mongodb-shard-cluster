@@ -94,8 +94,6 @@ services:
     ports:
       - 27019:27017
     links:
-      - configsvr1
-      - configsvr2
       - shard00
       - shard10
       - shard20
@@ -107,6 +105,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 27020:27017
+    links:
+      - configsvr0
   configsvr2:
     image: mongo
     command: mongod --configsvr --replSet configRs --dbpath /data/db --port 27017
@@ -115,6 +115,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 27021:27017
+    links:
+      - configsvr1
   router0:
     image: mongo
     command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017
@@ -124,9 +126,7 @@ services:
     ports:
       - 27050:27017
     links:
-      - configsvr0
       - configsvr2
-      - configsvr1
   router1:
     image: mongo
     command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017
@@ -137,3 +137,6 @@ services:
       - 27018:27017
     links:
       - router0
+
+
+      
