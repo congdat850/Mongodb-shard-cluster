@@ -6,13 +6,13 @@
 2. Setup Shards:
 - docker exec -it docker exec -it shardingbydockercompose_shard00_1 bash
 - mongo scripts/replicaset_0/init_mongodb_replicaset.js
-====================================================================================
+
 - docker exec -it docker exec -it shardingbydockercompose_shard10_1 bash
 - mongo scripts/replicaset_10/init_mongodb_replicaset.js
-====================================================================================
+
 - docker exec -it docker exec -it shardingbydockercompose_shard20_1 bash
 - mongo scripts/replicaset_20/init_mongodb_replicaset.js
-====================================================================================
+
 => Check shard for container:
 - docker exec -it docker exec -it shardingbydockercompose_shardx0_1 bash
 - mongo rs.status()
