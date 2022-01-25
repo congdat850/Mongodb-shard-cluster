@@ -119,20 +119,46 @@ services:
       - configsvr1
   router0:
     image: mongo
-    command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017
+    command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --bind_ip_all --port 27017
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./scripts/sharding_replicaset:/scripts/sharding_replicaset
+    depends_on:
+      - shard00
+      - shard01
+      - shard02
+      - shard10
+      - shard11
+      - shard12
+      - shard20
+      - shard21
+      - shard22
+      - configsvr0
+      - configsvr1
+      - configsvr2
     ports:
-      - 27050:27017
+      - 27016:27017
     links:
       - configsvr2
   router1:
     image: mongo
-    command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017
+    command: mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --bind_ip_all --port 27017
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./scripts/sharding_replicaset:/scripts/sharding_replicaset
+    depends_on:
+      - shard00
+      - shard01
+      - shard02
+      - shard10
+      - shard11
+      - shard12
+      - shard20
+      - shard21
+      - shard22
+      - configsvr0
+      - configsvr1
+      - configsvr2
     ports:
       - 27018:27017
     links:
