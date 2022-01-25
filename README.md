@@ -38,21 +38,21 @@
 - mongo
 
 6. Enable Sharding at Database Level:
-mongos> use example
+- mongos> use example
 
 7. Enable Sharding at Collection Level:
-mongos> use example
-mongos> db.exCollection.ensureIndex({ _id : "hashed" })
-mongos> sh.shardCollection("example.exCollection", {"_id" : "hashed"})
+- mongos> use example
+- mongos> db.exCollection.ensureIndex({ _id : "hashed" })
+- mongos> sh.shardCollection("example.exCollection", {"_id" : "hashed"})
 
 8. Check sharding status:
-mongos> sh.status()
+- mongos> sh.status()
 
 9. Insert data and check process partition:
-mongos> use example
-mongos> for (var i = 1; i <= 10000; i++) db.exCollection.insert( { x : i } )
+- mongos> use example
+- mongos> for (var i = 1; i <= 10000; i++) db.exCollection.insert( { x : i } )
 
-mongos> use example
-mongos> db.exCollection.getShardDistribution()
+- mongos> use example
+- mongos> db.exCollection.getShardDistribution()
 
 src: https://vnsys.wordpress.com/2021/05/24/deploy-mongodb-sharded-cluster/
