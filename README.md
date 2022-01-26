@@ -39,6 +39,7 @@
 
 6. Enable Sharding at Database Level:
 - mongos> use example
+- mongos> sh.enableSharding("example")
 
 7. Enable Sharding at Collection Level:
 - mongos> use example
@@ -55,4 +56,6 @@
 - mongos> use example
 - mongos> db.exCollection.getShardDistribution()
 
-src: https://vnsys.wordpress.com/2021/05/24/deploy-mongodb-sharded-cluster/
+src:
+- https://vnsys.wordpress.com/2021/05/24/deploy-mongodb-sharded-cluster/
+- https://viblo.asia/p/cai-dat-mongo-cluster-voi-docker-m68Z0NN25kG
