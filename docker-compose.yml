@@ -137,7 +137,7 @@ services:
       - configsvr1
       - configsvr2
     ports:
-      - 27016:27017
+      - 27017:27017
     links:
       - configsvr2
   router1:
